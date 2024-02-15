@@ -1,72 +1,68 @@
-// Définir la fonction pour naviguer vers une slide spécifique
-function navigateToSlide(slideIndex) {
-    console.log("Navigating to slide", slideIndex);
+const slides = [
+			{
+				"image": "slide1.jpg",
+				"tagLine": "Impressions tous formats <span>en boutique et en ligne</span>"
+			},
+			{
+				"image": "slide2.jpg",
+				"tagLine": "Tirages haute définition grand format <span>pour vos bureaux et events</span>"
+			},
+			{
+				"image": "slide3.jpg",
+				"tagLine": "Grand choix de couleurs <span>de CMJN aux pantones</span>"
+			},
+			{
+				"image": "slide4.png",
+				"tagLine": "Autocollants <span>avec découpe laser sur mesure</span>"
+			}
+		];
+
+const bannerImages = document.querySelector('.banner-img');
+const arrowLeft = document.querySelector('.arrow_left');
+const arrowRight = document.querySelector('.arrow_right');
+const dots = document.querySelectorAll('.dot');
+
+let navigateToSlide = 0;
+
+// Event listener pour le clic flèche droite
+arrowRight.addEventListener('click', function () {
+    navigateToSlide = (navigateToSlide + 1) ;
+    updateShowSlides(navigateToSlide, 'right');
+    updateDots(navigateToSlide); 
+    console.log('clicked to arrowRight')
+    });
+
+    // Event listener pour le clic flèche gauche
+arrowLeft.addEventListener('click', function () {
+    navigateToSlide = (navigateToSlide - 1);
+    updateShowSlides(navigateToSlide, 'left');
+    updateDots(navigateToSlide);
+    console.log('clicked to arrowLeft')
+    });
+
+function updateDots(index) {
+    dots.forEach((dot, i) => {
+    // La condition vérifie si l'index actuel (i) est égal à l'index du slide actuel.
+        if (i === index) {
+            dot.classList.add('dot_selected'); 
+        } else {
+            dot.classList.remove('dot_selected'); 
+        }
+    });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const bannerContainer = document.getElementById('banner');
-    const dotsContainer = bannerContainer.querySelector('.dots');
-    const slides = [
-        {
-            "image": "slide1.jpg",
-            "tagLine": "Impressions tous formats <span>en boutique et en ligne</span>"
-        },
-        {
-            "image": "slide2.jpg",
-            "tagLine": "Tirages haute définition grand format <span>pour vos bureaux et events</span>"
-        },
-        {
-            "image": "slide3.jpg",
-            "tagLine": "Grand choix de couleurs <span>de CMJN aux pantones</span>"
-        },
-        {
-            "image": "slide4.png",
-            "tagLine": "Autocollants <span>avec découpe laser sur mesure</span>"
-        }
-    ];
+// Fonction pour mettre à jour les points indicateurs, l'image et le texte
+function updateShowSlides(index, direction) {
+      if (navigateToSlide === -1 && direction === 'left') {
+        navigateToSlide = slides.length - 1;
+    } else if (navigateToSlide === slides.length && direction === 'right') {
+        navigateToSlide = 0;
+    }
 
-    // Récupérer les éléments HTML représentant les images
-    const bannerImages = Array.from(bannerContainer.querySelectorAll('.banner-img'));
-	console.log(bannerImages);
+    const imagePath = `assets/images/slideshow/${slides[navigateToSlide].image}`;
+    bannerImages.src = imagePath;
+    bannerImages.alt = `Slide ${navigateToSlide + 1}`;
 
-    slides.forEach((slide, index) => {
-        const dot = document.createElement('span');
-        dot.classList.add('dot');
-
-        // Mettre en surbrillance le premier dot (la première slide)
-        if (index === 0) {
-            dot.classList.add('dot_selected');
-        }
-
-        dotsContainer.appendChild(dot);
-
-        dot.addEventListener('click', () => {
-            navigateToSlide(index);
-
-            // Réinitialiser les classes des dots
-            bannerContainer.querySelectorAll('.dots .dot').forEach((dot, dotIndex) => {
-                dot.classList.remove('dot_selected');
-                if (dotIndex === index) {
-                    dot.classList.add('dot_selected');
-                }
-            });
-        });
-    });   
-});
-
-// Sélectionner les flèches
-let arrowLeft = document.querySelector(".arrow_left");
-let arrowRight = document.querySelector(".arrow_right");
-
-// Vérifier les flèches
-console.log(arrowLeft);
-console.log(arrowRight);
-
-// Ajout d'un event listener pour chaque flèche
-arrowLeft.addEventListener("click", function() {
-    console.log("Left arrow clicked");
-});
-
-arrowRight.addEventListener("click", function() {
-    console.log("Right arrow clicked");
-});
+    const tagLine = slides[navigateToSlide].tagLine;
+    document.querySelector('p').innerHTML = tagLine;
+}
