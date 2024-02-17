@@ -30,7 +30,7 @@ arrowRight.addEventListener('click', function () {
     updateShowSlides(navigateToSlide, 'right');
     updateDots(navigateToSlide); 
     console.log('clicked to arrowRight')
-    });
+});
 
     // Event listener pour le clic flèche gauche
 arrowLeft.addEventListener('click', function () {
@@ -38,7 +38,7 @@ arrowLeft.addEventListener('click', function () {
     updateShowSlides(navigateToSlide, 'left');
     updateDots(navigateToSlide);
     console.log('clicked to arrowLeft')
-    });
+});
 
 function updateDots(index) {
     dots.forEach((dot, i) => {
@@ -61,8 +61,7 @@ function updateShowSlides(index, direction) {
 
     const imagePath = `assets/images/slideshow/${slides[navigateToSlide].image}`;
     bannerImages.src = imagePath;
-    bannerImages.alt = `Slide ${navigateToSlide + 1}`;
-
+    
     const tagLine = slides[navigateToSlide].tagLine;
     document.querySelector('p').innerHTML = tagLine;
 }
